@@ -6,6 +6,15 @@ const morgan = require('morgan');
 const rutasGenerales = require('./routes/general.routes');
 const override = require("method-override");
 
+const cors = require("cors");
+
+app.use(
+  cors({
+    origin: process.env.FRONT_URL,
+    methods: ["GET", "POST"],
+  })
+);
+
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

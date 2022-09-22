@@ -1,4 +1,5 @@
 const { Router } = require("express");
+const nodemailer = require("nodemailer");
 const router = Router();
 const proyectosModel = require("../models/proyectos");
 
@@ -14,6 +15,53 @@ router.post("/add-proyecto", async (req, res) => {
   await newProyecto.save();
 
   res.redirect("http://localhost:5173/add-proyect");
+});
+
+router.get("/proyectos", async (req, res) => {
+
+  const proyectos = await proyectosModel.find().lean();
+
+  res.send(proyectos)
+
+});
+
+router.post("/send-email", async (req, res) => {
+
+  const transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 587,
+    auth: {
+      user: process.env.AUTH_USER,
+      pass: process.env.AUTH_PASS,
+    },
+    tls: { rejectUnauthorized: false },
+  });
+
+  transporter.verify(function (error) {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log("Server is ready to take our messages");
+    }
+  });
+
+  const { nombre, email, asunto, mensaje } = req.body;
+
+  const mailOptions = {
+    from: "carlossoncra@gmail.com",
+    to: "carlossoncra@gmail.com",
+    subject: "Quisiera contactarme contigo!",
+    text: `${nombre} quiere contactarse contigo, los siguientes datos del mensaje son:\n
+    Email: ${email}\n
+    Asunto: ${asunto}\n
+    Mensaje: ${mensaje}`,
+  };
+
+  await transporter.sendMail(mailOptions, (error) => {
+    error ? console.log(error) : console.log("Email enviado ");
+    res.redirect("http://localhost:5173");
+  });
+
 });
 
 router.get("*", (_req, res) => {
