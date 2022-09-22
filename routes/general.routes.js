@@ -21,7 +21,7 @@ router.get("/proyectos", async (req, res) => {
 
   const proyectos = await proyectosModel.find().lean();
 
-  res.send(proyectos)
+  res.send(proyectos);
 
 });
 
@@ -48,8 +48,8 @@ router.post("/send-email", async (req, res) => {
   const { nombre, email, asunto, mensaje } = req.body;
 
   const mailOptions = {
-    from: "carlossoncra@gmail.com",
-    to: "carlossoncra@gmail.com",
+    from: email,
+    to: process.env.AUTH_EMAIL,
     subject: "Quisiera contactarme contigo!",
     text: `${nombre} quiere contactarse contigo, los siguientes datos del mensaje son:\n
     Email: ${email}\n
@@ -59,7 +59,7 @@ router.post("/send-email", async (req, res) => {
 
   await transporter.sendMail(mailOptions, (error) => {
     error ? console.log(error) : console.log("Email enviado ");
-    res.redirect("http://localhost:5173");
+    res.redirect(process.env.FRONT_URL);
   });
 
 });
