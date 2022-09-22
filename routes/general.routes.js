@@ -14,7 +14,7 @@ router.post("/add-proyecto", async (req, res) => {
 
   await newProyecto.save();
 
-  res.redirect("http://localhost:5173/add-proyect");
+  res.redirect(`${process.env.FRONT_URL}/add-proyect`);
 });
 
 router.get("/proyectos", async (req, res) => {
