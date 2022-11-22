@@ -10,7 +10,10 @@ const cors = require("cors");
 
 app.use(
   cors({
-    origin: process.env.FRONT_URL,
+    origin: [
+      process.env.URL_VERCEL,
+      process.env.URL_ONLINE
+    ],
     methods: ["GET", "POST"],
   })
 );
