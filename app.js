@@ -7,6 +7,7 @@ const rutasGenerales = require('./routes/general.routes');
 const override = require("method-override");
 
 const cors = require("cors");
+app.options('*', cors());
 
 app.use(
   cors({
