@@ -1,3 +1,5 @@
 const index = require('./app');
 
-index.listen(process.env.PORT || 80, () => console.log(`🚀 Server active on port: ${process.env.PORT || 80}`));
+const PORT = process.env.PORT || 5000
+
+index.listen(PORT, () => console.log(`🚀 Server active on port: ${PORT}`));
